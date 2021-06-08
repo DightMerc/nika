@@ -1,0 +1,17 @@
+в папке открыть cmd
+откроется окно
+
+в окне написать venv\Scripts\activate
+нажать enter
+
+cd mysite
+
+python manage.py runserver
+
+127.0.0.1:8000/admin
+admin
+helloworld8
+
+127.0.0.1:8000/
+
+C:\Users\Комочек\Desktop\diplom\mysite\core\static\assets\img
