@@ -5,6 +5,10 @@ from django.views import View
 from django.core.paginator import Paginator
 
 from core import models
+import logging
+from django.db.models import Q
+
+logger = logging.getLogger(__name__)
 
 # Create your views here.
 
@@ -13,17 +17,23 @@ class MainView(View):
 
     def get(self, request):
 
+        current_pet_type = request.GET.get('pet', 'Собаки')
+
         news = models.News.objects.all()
+
+        pet_types = models.PetType.objects.filter(~Q(title=current_pet_type))
 
         news = Paginator(news, 2)
 
-        pets = models.Pet.objects.all()
+        pets = models.Pet.objects.filter(pet_type__title=current_pet_type)
         pets = pets[:3]
 
         return render(request, 'core/index.html',
         {
             'news': news.page(1),
-            'pets': pets
+            'pets': pets,
+            'pet_types': pet_types,
+            'current_pet_type': current_pet_type
         })
 
 

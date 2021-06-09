@@ -172,6 +172,7 @@
         
         <!-- About Area End -->
         <!--? Our Cases Start -->
+        
         <div class="our-cases-area section-padding30">
             <div class="container">
                 <div class="row justify-content-center">
@@ -183,9 +184,21 @@
                         </div>
                     </div>
                 </div>
+                <div class='row mb-40'>
+                    <div class="col-xl-10 col-lg-10 ">
+                        <h2>Категория</h2>
+                        <select onchange="changePet(this.value)" id='pet-select'>
+                            <option>{{current_pet_type}}</option>
+                            {% for type in pet_types %}
+                                <option>{{type}}</option>
+
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
                 <div class="row">
                     {% for pet in pets %}
-                    <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="col-lg-4 col-md-6 col-sm-6 собаки">
                         <div class="single-cases mb-40">
                             <div class="cases-img">
                                 <img src="{{pet.image.url}}" alt="">
@@ -200,7 +213,6 @@
                                             <div class="tipWrap">
                                                 <span class="tip"></span>
                                             </div>
-                                            <span class="fill" data-percentage="70"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -280,6 +292,12 @@
     </div>
 
     <!-- JS here -->
+
+    <script>
+        changePet = (text)=>{
+            window.location.replace(`/?pet=${text}`);
+        }
+    </script>
 
 
     <script src="{% static './assets/js/vendor/modernizr-3.5.0.min.js' %}"></script>

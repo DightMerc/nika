@@ -39,6 +39,12 @@ class Pet(models.Model):
         blank=False
     )
 
+    pet_type = models.ForeignKey(
+        'PetType',
+        on_delete=models.CASCADE,
+        null=True
+    )
+
     description = models.TextField(
         null=False
     )
@@ -53,3 +59,19 @@ class Pet(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class PetType(models.Model):
+
+    title = models.CharField(
+        max_length=256,
+        null=False,
+        blank=False
+    )
+
+    created_at = models.DateTimeField(
+        auto_created=True
+    )
+
+    def __str__(self):
+        return self.title
