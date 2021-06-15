@@ -24,4 +24,5 @@ urlpatterns = [
     path('about/', views.AboutView.as_view()),
     path('news/', views.NewsView.as_view()),
     path('news/<int:id>/', views.ArticleView.as_view()),
+    path('search/', views.SearchView.as_view())
 ]

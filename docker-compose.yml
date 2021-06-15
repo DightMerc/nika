@@ -1,0 +1,53 @@
+version: '3.7'
+
+services:
+  web:
+    build: ./mysite
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./mysite/:/usr/src/app/
+    ports:
+      - 8050:8000
+    hostname: master
+    environment:
+      - DEBUG=${DEBUG}
+      - SECRET_KEY=${SECRET_KEY}
+      - DJANGO_ALLOWED_HOSTS=${DJANGO_ALLOWED_HOSTS}
+      - SQL_ENGINE=${SQL_ENGINE}
+      - SQL_DATABASE=${SQL_DATABASE}
+      - SQL_USER=${SQL_USER}
+      - SQL_PASSWORD=${SQL_PASSWORD}
+      - SQL_HOST=${SQL_HOST}
+      - SQL_PORT=${SQL_PORT}
+      - DATABASE=${DATABASE}
+    depends_on:
+      - elasticsearch2
+  elasticsearch2:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.4.0
+    container_name: elasticsearch2
+    restart: always
+    hostname: es
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+      - 9300:9300
+  
+
+volumes:
+  postgres_data:
+  elasticsearch-data:
+    driver: local
+  # redis-data: {}

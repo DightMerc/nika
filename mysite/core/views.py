@@ -7,10 +7,12 @@ from django.core.paginator import Paginator
 from core import models
 import logging
 from django.db.models import Q
+import json
+
+from core.forms import SearchForm
+from core import documents
 
 logger = logging.getLogger(__name__)
-
-# Create your views here.
 
 
 class MainView(View):
@@ -43,6 +45,40 @@ class ContactView(View):
 
         return render(request, 'core/contacts.html')
 
+
+class SearchView(View):
+
+    def post(self, request):
+
+        form = SearchForm(request.POST)
+
+        if form.is_valid:
+
+
+            value = form.data.get('value', '')
+
+            all_news = []
+            news = documents.NewsDocument.search().query("fuzzy", title=value).to_queryset()
+            for new in news:
+                all_news.append(new)
+
+            news = documents.NewsDocument.search().query("fuzzy", description=value).to_queryset()
+            for new in news:
+                if new not in all_news:
+                    all_news.append(new)
+
+            news = Paginator(all_news, 5)
+            try:
+                recent = news.page(2)
+            except Exception as e:
+                recent = news.page(1)
+
+            return render(request, 'core/news.html',
+            {
+                'news': news.page(1),
+                'recent': recent
+            })
+        
 
 class AboutView(View):
 
