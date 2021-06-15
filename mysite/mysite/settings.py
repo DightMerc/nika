@@ -53,7 +53,7 @@ MIDDLEWARE = [
 
 ELASTICSEARCH_DSL={
     'default': {
-        'hosts': 'es:9200'
+        'hosts': 'es:9201'
     },
 }
 
